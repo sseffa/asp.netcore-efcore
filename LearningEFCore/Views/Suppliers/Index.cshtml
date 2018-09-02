@@ -1,0 +1,60 @@
+﻿@model IEnumerable<LearningEFCore.Models.Supplier>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2></h2>
+
+<div class="row">
+    <div class="col-sm-6>
+
+        @foreach (Supplier s in Model)
+        {
+            
+            <br />
+            <h4 class="bg-info text-center text-white p-1">
+                <strong> @s.Name</strong>
+                  <br />
+                  <br />
+                <a asp-action="Edit" asp-route-id="@s.Id"
+                   class="btn btn-sm btn-warning">Edit</a>
+                <a asp-action="Create" asp-route-id="@s.Id"
+                   class="btn btn-sm btn-danger">Add</a>
+                <a asp-action="Change" asp-route-id="@s.Id"
+                   class="btn btn-sm btn-primary">Change</a>
+            </h4>
+            <br />
+            <br />
+            <div class="container-fluid">
+                @if (s.Products == null || s.Products.Count() == 0)
+                {
+                    <div class="p-1 text-center">No Products</div>
+                }
+                else if (ViewBag.SupplierEditId == s.Id)
+                {
+                    @Html.Partial("/Home/Edit", s);
+                }
+                else if (ViewBag.SupplierRelationshipId == s.Id)
+                {
+                    @Html.Partial("RelationshipEdit", (s, Model));
+                }
+                else
+                {
+                    @foreach (Product p in s.Products)
+                    {
+                        <div class="row p-1">
+                            <div class="col">@p.Name</div>
+                            <div class="col">@p.Category</div>
+                            <div class="col">@p.Price</div>
+                        </div>
+                    }
+                    if (ViewBag.SupplierCreateId == s.Id)
+                    {
+                        @Html.Partial("Create", s);
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>
